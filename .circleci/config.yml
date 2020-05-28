@@ -23,11 +23,11 @@ jobs:
     test:
       working_directory: ~/webapp
         docker:
-            - image: circleci/openjdk:8-jdk
-              - image: circleci/mysql:5.7.30
-                environment:
-                  - MYSQL_ROOT_PASSWORD: sapnaneu
-                  - MYSQL_DATABASE: Assignment
+          - image: circleci/openjdk:8-jdk
+          - image: circleci/mysql:5.7.30
+          environment:
+            - MYSQL_ROOT_PASSWORD: sapnaneu
+            - MYSQL_DATABASE: Assignment
 
         steps:
           - checkout
