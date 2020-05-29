@@ -7,27 +7,27 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/**/usage.statistics.xml
-.idea/**/dictionaries
-.idea/**/shelf
+assignment/.idea/**/workspace.xml
+assignment/.idea/**/tasks.xml
+assignment/.idea/**/usage.statistics.xml
+assignment/.idea/**/dictionaries
+assignment/.idea/**/shel
 
 # Generated files
-.idea/**/contentModel.xml
+assignment/.idea/**/contentModel.xml
 
 # Sensitive or high-churn files
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
-.idea/**/dbnavigator.xml
+assignment/.idea/**/dataSources/
+assignment/.idea/**/dataSources.ids
+assignment/.idea/**/dataSources.local.xml
+assignment/.idea/**/sqlDataSources.xml
+assignment/.idea/**/dynamic.xml
+assignment/.idea/**/uiDesigner.xml
+assignment/.idea/**/dbnavigator.xml
 
 # Gradle
-.idea/**/gradle.xml
-.idea/**/libraries
+assignment/.idea/**/gradle.xml
+assignment/.idea/**/libraries
 
 # Gradle and Maven with auto-import
 # When using Gradle or Maven with auto-import, you should exclude module files,
@@ -40,37 +40,37 @@
 # *.ipr
 
 # CMake
-cmake-build-*/
+assignment/cmake-build-*/
 
 # Mongo Explorer plugin
-.idea/**/mongoSettings.xml
+assignment/.idea/**/mongoSettings.xml
 
 # File-based project format
-*.iws
+assignment/*.iws
 
 # IntelliJ
-out/
+assignment/out/
 
 # mpeltonen/sbt-idea plugin
-.idea_modules/
+assignment/.idea_modules/
 
 # JIRA plugin
-atlassian-ide-plugin.xml
+assignment/atlassian-ide-plugin.xml
 
 # Cursive Clojure plugin
-.idea/replstate.xml
+assignment/.idea/replstate.xml
 
 # Crashlytics plugin (for Android Studio and IntelliJ)
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-fabric.properties
+assignment/com_crashlytics_export_strings.xml
+assignment/crashlytics.properties
+assignment/crashlytics-build.properties
+assignment/fabric.properties
 
 # Editor-based Rest Client
-.idea/httpRequests
+assignment/.idea/httpRequests
 
 # Android studio 3.1+ serialized cache file
-.idea/caches/build_file_checksums.ser
+assignment/.idea/caches/build_file_checksums.ser
 
 ### Intellij Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
@@ -81,42 +81,42 @@ fabric.properties
 # *.ipr
 
 # Sonarlint plugin
-.idea/**/sonarlint/
+assignment/.idea/**/sonarlint/
 
 # SonarQube Plugin
-.idea/**/sonarIssues.xml
+assignment/.idea/**/sonarIssues.xml
 
 # Markdown Navigator plugin
-.idea/**/markdown-navigator.xml
-.idea/**/markdown-navigator/
+assignment/.idea/**/markdown-navigator.xml
+assignment/.idea/**/markdown-navigator/
 
 ### Java ###
 # Compiled class file
-*.class
+assignment/*.class
 
 # Log file
-*.log
+assignment/*.log
 
 # BlueJ files
-*.ctxt
+assignment/*.ctxt
 
 # Mobile Tools for Java (J2ME)
-.mtj.tmp/
+assignment/.mtj.tmp/
 
 # Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
+assignment/*.jar
+assignment/*.war
+assignment/*.nar
+assignment/*.ear
+assignment/*.zip
+assignment/*.tar.gz
+assignment/*.rar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+assignment/hs_err_pid*
 
 ### Java-Web ###
 ## ignoring target file
-target/
+assignment/target/
 
 # End of https://www.gitignore.io/api/java,java-web,intellij
