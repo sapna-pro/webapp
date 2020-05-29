@@ -92,10 +92,11 @@
 <form action="index" style="border:1px solid #ccc" method="post">
     <div class="container">
         <h1 align="center">Sign Up</h1>
+        <span><%=request.getAttribute("not-found")%></span>
         <hr>
         <label><b>Email</b></label>
         <input type="text" placeholder="Enter Email" name="email" required>
-        <span><%=request.getAttribute("alreadyRegisteredMessage")%></span>
+
         <label><b>Password</b></label>
         <input type="password" placeholder="Enter Password" name="psw" required>
 

@@ -4,17 +4,16 @@ package com.webapp.assignment.Controller;
 import com.webapp.assignment.Entity.User;
 import com.webapp.assignment.Repository.UserRepository;
 import com.webapp.assignment.Service.Userservice;
-import jdk.nashorn.internal.ir.CallNode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import sun.tools.jar.Main;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +23,6 @@ import javax.validation.Valid;
 
 @RestController
 public class MainController {
-
 
     private Userservice userservice;
     private UserRepository userRepository;
@@ -99,37 +97,46 @@ public class MainController {
     @PostMapping(value = "/index")
     public ModelAndView CreateNewUser(HttpServletRequest request, @Valid User user, BindingResult bindingResult){
 
-        ModelAndView modelAndView = new ModelAndView("index");
+        ModelAndView modelAndView = new ModelAndView();
+        try {
+            User userExists = userservice.findUserByEmail(request.getParameter("email"));
+            System.out.println(userExists + "userexist");
+            HttpSession session = request.getSession();
 
-        User userExists = userservice.findUserByEmail(request.getParameter("email"));
-        System.out.println(userExists +"userexist");
-        HttpSession session=request.getSession();
+            boolean result = userservice.userExist(request.getParameter("email"));
 
-        boolean result = userservice.userExist(request.getParameter("email"));
-
-        if(result == false){
-            String email = request.getParameter("email");
-            String pass = request.getParameter("psw");
-            session.setAttribute("email",email);
-
-            user.setEmailid(request.getParameter("email"));
-            user.setPassword(bCryptPasswordEncoder.encode(request.getParameter("psw")));
-            user.setFname(request.getParameter("fname"));
-            user.setLname(request.getParameter("lname"));
-            userservice.saveUser(user);
-            session.setAttribute("user",user);
-            modelAndView.addObject("successMessage", "User has been registered successfully");
-            modelAndView.addObject("user1", new User());
-            modelAndView.addObject("email", user.getEmailid());
-            modelAndView.addObject("user",user);
-            modelAndView.setViewName("update");
-        }else{
-            bindingResult.rejectValue("email", "error.user", "This email id is already registered.");
-            modelAndView.addObject("alreadyRegisteredMessage", "Oops!  There is already a user registered with the email provided.");
+            if (result == false) {
+                String email = request.getParameter("email");
+                String pass = request.getParameter("psw");
+                String fname = request.getParameter("fname");
+                String lname = request.getParameter("lname");
+                if(email.equals(" ") && pass.equals(" ") && fname.equals(" ") && lname.equals("")){
+                    request.setAttribute("null","all Fileld required");
+                }else {
+                    session.setAttribute("email", email);
+                    user.setEmailid(request.getParameter("email"));
+                    user.setPassword(bCryptPasswordEncoder.encode(request.getParameter("psw")));
+                    user.setFname(request.getParameter("fname"));
+                    user.setLname(request.getParameter("lname"));
+                    userservice.saveUser(user);
+                    session.setAttribute("user", user);
+                    modelAndView.addObject("successMessage", "User has been registered successfully");
+                    modelAndView.addObject("user1", new User());
+                    modelAndView.addObject("email", user.getEmailid());
+                    modelAndView.addObject("user", user);
+                    modelAndView.setViewName("update");
+                }
+            } else {
+                bindingResult.rejectValue("email", "error.user", "This email id is already registered.");
+                modelAndView.addObject("alreadyRegisteredMessage", "Oops!  There is already a user registered with the email provided.");
+                modelAndView.setViewName("index");
+                return modelAndView;
+            }
+        }catch (Exception e){
+            request.setAttribute("not-found","User already exist");
             modelAndView.setViewName("index");
             return modelAndView;
         }
-
 //        if(userExists != null){
 //            bindingResult.rejectValue("email", "error.user", "This email id is already registered.");
 //            modelAndView.addObject("alreadyRegisteredMessage", "Oops!  There is already a user registered with the email provided.");
