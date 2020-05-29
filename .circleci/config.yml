@@ -17,4 +17,3 @@ jobs:
              ls -al
              cd assignment
              mvn clean install
-             mvn clean build
