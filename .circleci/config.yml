@@ -1,48 +1,20 @@
 version: 2.1
 jobs:
   build:
-    working_directory: ~/webapp
-      docker:
-         - image: circleci/openjdk:8-jdk
-         - image: circleci/mysql:5.7.30
+     docker:
+       - image: circleci/openjdk:8-jdk
+       - image: circleci/mysql:5.7.30
          environment:
-          - MYSQL_ROOT_PASSWORD: sapnaneu
-          - MYSQL_DATABASE: Assignment
-
-      steps:
-        - checkout
-        - run:
-           name: Build WAR
-           command:
-             echo 'delivery pipeline'
+         - MYSQL_ROOT_PASSWORD: sapnaneu
+         - MYSQL_DATABASE: Assignment
+     steps:
+       - checkout
+       - run:
+           name: Build WAR file
+           command:  |
+             echo 'test'
              pwd
              ls -al
-            ./mvnw clean install
-            ./mvnw spring-boot:run
-
-    test:
-      working_directory: ~/webapp
-        docker:
-          - image: circleci/openjdk:8-jdk
-          - image: circleci/mysql:5.7.30
-          environment:
-            - MYSQL_ROOT_PASSWORD: sapnaneu
-            - MYSQL_DATABASE: Assignment
-
-        steps:
-          - checkout
-          - run:
-              name: Build WAR
-              command:
-                echo 'delivery pipeline'
-                pwd
-                ls -al
-                ./mvnw clean install
-                ./mvnw spring-boot:run
-
-  workflows:
-    version: 2
-    build_and_test:
-      jobs:
-        - build
-        - test
+             cd assignment
+             mvn clean install
+             mvn clean build
