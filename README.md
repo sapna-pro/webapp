@@ -27,3 +27,5 @@ Alternatively you can use the Spring Boot Maven plugin like so:
 mvn spring-boot:run
 
 http://localhost:8081/
+
+test
