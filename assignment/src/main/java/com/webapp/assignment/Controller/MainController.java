@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,7 +23,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 
-@RestController
+@Controller
 public class MainController {
 
     private Userservice userservice;
@@ -67,7 +69,7 @@ public class MainController {
     }
 
     @PostMapping(value = "/login")
-    public ModelAndView afterlogging(HttpServletRequest request, HttpServletResponse response){
+    public ModelAndView afterlogging(HttpServletRequest request, HttpServletResponse response, Model model){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         System.out.println(request.getParameter("email"));
@@ -82,8 +84,10 @@ public class MainController {
         if(u != null){
             modelAndView.addObject("email", u.getEmailid());
             modelAndView.addObject("user",u);
-            modelAndView.setViewName("update");
-            session.setAttribute("user",u);
+            model.addAttribute("user",u.getEmailid());
+            session.setAttribute("logged_user",u);
+            modelAndView.setViewName("product_all");
+
         }
         if(u == null)
         {
@@ -124,7 +128,7 @@ public class MainController {
                     modelAndView.addObject("user1", new User());
                     modelAndView.addObject("email", user.getEmailid());
                     modelAndView.addObject("user", user);
-                    modelAndView.setViewName("update");
+                    modelAndView.setViewName("product_all");
                 }
             } else {
                 bindingResult.rejectValue("email", "error.user", "This email id is already registered.");
