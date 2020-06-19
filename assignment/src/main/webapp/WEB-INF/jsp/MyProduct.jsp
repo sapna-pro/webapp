@@ -61,13 +61,19 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                     <div class="panel-body">
                         <p>Price : ${filterproduct.getPrice()}  </p>
                         <p>Author :  ${filterproduct.getAuthore()} </p>
+                        <img src=${filterproduct.getImagepath()} style="width:50px;height:50px;"/>
                     </div>
                     <div class="panel-footer"> <button type="button" class="btn btn-primary btn-md"
                                                        onClick="location.href='Update_product${filterproduct.getId()}'">Update</button>
                      <button type="button" class="btn btn-primary btn-md"
                                                        onClick="location.href='delete_product${filterproduct.getId()}'">Delete</button></div>
+                  <div><button type="button" class="btn btn-primary btn-md"
+                            onClick="location.href='delete_img${filterproduct.getId()}'">Delete image</button>
+                        <button type="button" class="btn btn-primary btn-md"
+                                onClick="location.href='update_img${filterproduct.getId()}'">update image</button></div>
 
-                </div>
+
+            </div>
             </div>
         </c:forEach>
     </div>

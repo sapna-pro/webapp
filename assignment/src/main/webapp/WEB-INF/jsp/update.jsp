@@ -57,7 +57,7 @@ if(session.getAttribute("email")==null){
 <% User user = (User)session.getAttribute("user");%>
 
 
-  <h1>Welcome &nbsp;<%=request.getAttribute("email") %></h1>
+  <h1>Welcome &nbsp;<%=session.getAttribute("email") %></h1>
     <h3>Want to Update Information:</h3>
 
     <form action="re_update" method="post">

@@ -1,13 +1,13 @@
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jstl/sql" prefix="sql" %>
-<%@ taglib prefix="s" uri="http://www.springframework.org/tags/form"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
       xmlns:th="http://www.thymeleaf.org">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jstl/sql" prefix="sql" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags/form"%>
+
 
 <html lang="en">
 <head>
@@ -67,7 +67,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
 
 
-<form action="AddProduct" method="post" name="frm" modelAttribute="product">
+<form action="AddProduct" method="post" name="frm" modelAttribute="product" enctype="multipart/form-data">
 
     <table cellpadding="10" cellspacing="10" border="0">
 
@@ -92,8 +92,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         <tr>
             <td>Publication Date</td>
             <td><input type="text" id="datepicker" name="p_date" path="publication_date"></td>
-
-
         </tr>
 
         <tr>
@@ -101,7 +99,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             <td><input type="number" name="quantity" path="quantity"></td>
             <td>${not_empty5}</td>
             <td>${quantity}</td>
-
         </tr>
 
         <tr>
@@ -109,7 +106,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             <td><input type="number" path="price" name="price"></td>
             <td>${not_empty6}</td>
             <td>${price}</td>
+        </tr>
 
+        <tr>
+            <td>Image</td>
+            <td><input type="file" name="image"></td>
         </tr>
 
         <tr>

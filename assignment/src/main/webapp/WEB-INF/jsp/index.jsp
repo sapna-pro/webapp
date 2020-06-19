@@ -89,16 +89,18 @@
 
 <body>
 
-<form action="index" style="border:1px solid #ccc" method="post">
+<form action="index" style="border:1px solid #ccc" method="post" modelAttribute="user">
     <div class="container">
         <h1 align="center">Sign Up</h1>
-        <span><%=request.getAttribute("not-found")%></span>
+        <span>${exist}</span>
         <hr>
-        <label><b>Email</b></label>
+        <label><b>Email</b></label><span>${email_validate}</span>
         <input type="text" placeholder="Enter Email" name="email" required>
 
-        <label><b>Password</b></label>
+
+        <label><b>Password</b></label><span>${pass}</span>
         <input type="password" placeholder="Enter Password" name="psw" required>
+
 
         <label><b>First Name</b></label>
         <input type="text" placeholder="Enter FirstName" name="fname" required>
