@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,7 +32,11 @@ public class Product {
     private String publication_date;
     private int quantity;
     private double price;
-
+//    @Lob
+//    private Blob image;
+//    @Lob
+//    private byte[] photo;
+    private String imagepath;
 
     @CreationTimestamp
     private LocalDateTime createdOn;

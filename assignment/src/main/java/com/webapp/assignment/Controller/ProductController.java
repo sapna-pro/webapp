@@ -4,6 +4,7 @@ import com.webapp.assignment.Entity.Cart;
 import com.webapp.assignment.Entity.Product;
 import com.webapp.assignment.Entity.User;
 import com.webapp.assignment.Repository.CartRepository;
+import com.webapp.assignment.Service.AmazonClient;
 import com.webapp.assignment.Service.CartService;
 import com.webapp.assignment.Service.ProductService;
 
@@ -13,11 +14,15 @@ import org.springframework.ui.Model;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Blob;
 import java.util.List;
 
 
@@ -27,6 +32,8 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private AmazonClient client;
     @Autowired
     private CartService cartService;
     @Autowired
@@ -39,11 +46,16 @@ public class ProductController {
     }
 
     @PostMapping("/AddProduct")
-    public String AddDetail(HttpServletRequest request, @Valid @ModelAttribute(value = "product") Product product, Model model,RedirectAttributes attributes){
+    public String AddDetail(HttpServletRequest request, @Valid @ModelAttribute(value = "product") Product product, Model model,RedirectAttributes attributes,
+                            @RequestParam("image") MultipartFile image) throws IOException {
 
         HttpSession session = request.getSession();
         int quantity = (Integer.parseInt(request.getParameter("quantity")));
         double price = (Double.parseDouble(request.getParameter("price")));
+        //byte[] photoBytes = image.getBytes();
+       String file = image.getOriginalFilename();
+        System.out.println(file+" "+"file");
+        //System.out.println(photoBytes+"photobyte");
 
         if(request.getParameter("isbn") == null || request.getParameter("isbn").equals("")){
             attributes.addFlashAttribute("not_empty1","Fileld should not be emplty");
@@ -88,6 +100,8 @@ public class ProductController {
                 product.setQuantity(Integer.parseInt(request.getParameter("quantity")));
                 product.setPrice(Double.parseDouble(request.getParameter("price")));
                 product.setSeller((User) session.getAttribute("logged_user"));
+                String url =  client.uploadFile(image);
+                product.setImagepath(url);
                 productService.AddDetail(product);
                 return "product_all";
             } catch (Exception e) {
@@ -115,6 +129,17 @@ public class ProductController {
     @GetMapping("/delete_product{id}")
     public String DeleteProduct(@PathVariable("id") int id,Model model){
         productService.DeleteProduct(id);
+        return "redirect:/MyProduct";
+    }
+
+    @GetMapping("/delete_img{id}")
+    public String DeleteImage(@PathVariable("id") int id,Model model,HttpServletRequest request){
+        Product product = productService.getProduct(id);
+        String a = " ";
+        String fileurl = product.getImagepath();
+        String abc = client.deleteFileFromS3Bucket(fileurl);
+        product.setImagepath(a);
+        productService.AddDetail(product);
         return "redirect:/MyProduct";
     }
 
@@ -165,4 +190,11 @@ public class ProductController {
         }
         return -1;
     }
+
+    @GetMapping("/update_img{id}")
+    public String Update_Image(@PathVariable("id") int id,Model model,HttpServletRequest request){
+
+        return null;
+    }
+
 }

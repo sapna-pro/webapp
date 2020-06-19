@@ -3,6 +3,7 @@ package com.webapp.assignment.Service;
 import com.webapp.assignment.Entity.Cart;
 import com.webapp.assignment.Entity.Product;
 import com.webapp.assignment.Entity.User;
+import com.webapp.assignment.Repository.CartRepository;
 import com.webapp.assignment.Repository.ProductRepository;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+//    @Autowired
+//    private CartRepository cartRepository;
+
     public void AddDetail(Product product){
 
         productRepository.save(product);
@@ -42,7 +46,10 @@ public class ProductService {
     }
 
     public void DeleteProduct(int productId){
+
         productRepository.deleteById(productId);
+        //cartRepository.deleteById(productId);
+
     }
 
     public void UpdateProduct(String ISBN, String Title, String Authore,Double price,String publication_date,int quantity,int id){
