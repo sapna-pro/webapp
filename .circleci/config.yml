@@ -17,10 +17,9 @@ jobs:
              ls -al
              cd assignment
              mvn clean install
-             zip –r webapp.zip assignment
        - aws-s3/copy:
           arguments: '--dry-run'
-          from: webapp.zip
+          from: assignment/pom.xml
           to: 's3://codedeploye.sapnapatel.me'
 orbs:
   aws-s3: circleci/aws-s3@1.0.15  
