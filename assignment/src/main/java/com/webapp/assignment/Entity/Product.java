@@ -32,11 +32,16 @@ public class Product {
     private String publication_date;
     private int quantity;
     private double price;
+
+
 //    @Lob
 //    private Blob image;
 //    @Lob
 //    private byte[] photo;
-    private String imagepath;
+   // private String imagepath;
+
+    @ElementCollection
+    private List<String> images;
 
     @CreationTimestamp
     private LocalDateTime createdOn;

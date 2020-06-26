@@ -1,7 +1,9 @@
 package com.webapp.assignment.Controller;
 
+import com.amazonaws.services.dynamodbv2.xspec.L;
 import com.webapp.assignment.Entity.Cart;
 import com.webapp.assignment.Entity.Product;
+import com.webapp.assignment.Entity.Product_image;
 import com.webapp.assignment.Entity.User;
 import com.webapp.assignment.Repository.CartRepository;
 import com.webapp.assignment.Service.AmazonClient;
@@ -23,6 +25,9 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -47,15 +52,16 @@ public class ProductController {
 
     @PostMapping("/AddProduct")
     public String AddDetail(HttpServletRequest request, @Valid @ModelAttribute(value = "product") Product product, Model model,RedirectAttributes attributes,
-                            @RequestParam("image") MultipartFile image) throws IOException {
+                            @RequestParam("image") MultipartFile[] image) throws IOException {
 
         HttpSession session = request.getSession();
         int quantity = (Integer.parseInt(request.getParameter("quantity")));
         double price = (Double.parseDouble(request.getParameter("price")));
-        //byte[] photoBytes = image.getBytes();
-       String file = image.getOriginalFilename();
-        System.out.println(file+" "+"file");
-        //System.out.println(photoBytes+"photobyte");
+       // Product_image product_image = new Product_image();
+        List<MultipartFile> file1 = Arrays.asList(image);
+        List<String> urllist = new ArrayList<>();
+
+        System.out.println(file1+"###################list multiple file");
 
         if(request.getParameter("isbn") == null || request.getParameter("isbn").equals("")){
             attributes.addFlashAttribute("not_empty1","Fileld should not be emplty");
@@ -100,8 +106,11 @@ public class ProductController {
                 product.setQuantity(Integer.parseInt(request.getParameter("quantity")));
                 product.setPrice(Double.parseDouble(request.getParameter("price")));
                 product.setSeller((User) session.getAttribute("logged_user"));
-                String url =  client.uploadFile(image);
-                product.setImagepath(url);
+                for(MultipartFile file : image){
+                    String url =  client.uploadFile(file);
+                    urllist.add(url);
+                }
+                product.setImages(urllist);
                 productService.AddDetail(product);
                 return "product_all";
             } catch (Exception e) {
@@ -136,9 +145,15 @@ public class ProductController {
     public String DeleteImage(@PathVariable("id") int id,Model model,HttpServletRequest request){
         Product product = productService.getProduct(id);
         String a = " ";
-        String fileurl = product.getImagepath();
-        String abc = client.deleteFileFromS3Bucket(fileurl);
-        product.setImagepath(a);
+        List<String> blanklist = new ArrayList<>();
+        List<String> imageurl = product.getImages();
+        for (String abc: imageurl) {
+            client.deleteFileFromS3Bucket(abc);
+            blanklist.add(" ");
+        }
+        product.setImages(blanklist);
+//        String abc = client.deleteFileFromS3Bucket(fileurl);
+//        product.setImagepath(a);
         productService.AddDetail(product);
         return "redirect:/MyProduct";
     }
@@ -191,10 +206,38 @@ public class ProductController {
         return -1;
     }
 
-    @GetMapping("/update_img{id}")
-    public String Update_Image(@PathVariable("id") int id,Model model,HttpServletRequest request){
+    @GetMapping("/update_image{id}")
+    public String Update_Image(@PathVariable("id") int id,Model model){
 
-        return null;
+        model.addAttribute("p",productService.getProduct(id));
+//        Product product = productService.getProduct(id);
+//        List<MultipartFile> file1 = Arrays.asList(image);
+//        List<String> urllist = new ArrayList<>();
+//        for(MultipartFile file : image){
+//            String url =  client.uploadFile(file);
+//            urllist.add(url);
+//        }
+//        product.setImages(urllist);
+//        productService.AddDetail(product);
+
+        return "update_image";
+    }
+
+    @PostMapping("/update_image")
+    public String Update_img(Model model,HttpServletRequest request,
+                             @RequestParam("image") MultipartFile[] image)throws IOException{
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        Product product = productService.getProduct(id);
+       // List<MultipartFile> file1 = Arrays.asList(image);
+        List<String> urllist = new ArrayList<>();
+        for(MultipartFile file : image){
+            String url =  client.uploadFile(file);
+            urllist.add(url);
+        }
+        product.setImages(urllist);
+        productService.AddDetail(product);
+        return "redirect:/MyProduct";
     }
 
 }
