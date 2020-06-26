@@ -67,7 +67,16 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                     <div class="panel-body">
                         <p>Price : ${products.getPrice()}  </p>
                         <p>Author :  ${products.getAuthore()} </p>
-                        <img src= ${products.imagepath} style="width:50px;height:50px"/>
+                        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <c:forEach var="image" items="${products.images}">
+                                    <img class="d-block w-100" src="${imagePath}${image}" style="width:50px;height:50px"/>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                        </div>
+
 
                     </div>
                     <div class="panel-footer"> <button type="button" class="btn btn-primary btn-md"

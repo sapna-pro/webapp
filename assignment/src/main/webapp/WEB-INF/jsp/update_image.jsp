@@ -1,13 +1,13 @@
+<%@ page import="com.webapp.assignment.Entity.Product" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jstl/sql" prefix="sql" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags/form"%>
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html
 PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
       xmlns:th="http://www.thymeleaf.org">
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jstl/sql" prefix="sql" %>
-<%@ taglib prefix="s" uri="http://www.springframework.org/tags/form"%>
-
 
 <html lang="en">
 <head>
@@ -51,7 +51,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
                 <li class="active"><a href="product_all">Products</a></li>
                 <li><a href="AddProduct">Add Product</a></li>
-                <li><a href="MyProduct">MyProduct</a></li>
+                <li><a href="MyProduct">Stores</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -65,47 +65,52 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
 
 
-
-
-<form action="AddProduct" method="post" name="frm" modelAttribute="product" enctype="multipart/form-data">
+<form action="/update_image" method="post" name="frm" item="${p}" modelAttribute="product" enctype="multipart/form-data">
 
     <table cellpadding="10" cellspacing="10" border="0">
+        <tr>
+
+            <td><input type="hidden" name="id"  value=${p.getId()}></td>
+        </tr>
 
         <tr>
             <td>ISBN</td>
-            <td><input type="text" name="isbn" path="ISBN"></td>
+            <td><input type="text" name="isbn" path="ISBN" value=${p.getISBN()} disabled="disabled"></td>
             <td>${not_empty1}</td>
         </tr>
 
         <tr>
             <td>Title</td>
-            <td><input type="text" name="title" path="Title"></td>
+            <td><input type="text" name="title" path="Title" value=${p.getTitle()} disabled="disabled"></td>
             <td>${not_empty2}</td>
         </tr>
 
         <tr>
             <td>Author</td>
-            <td><input type="text" name="author" path="Authore"></td>
+            <td><input type="text" name="author" path="Authore" value=${p.getAuthore()} disabled="disabled"></td>
             <td>${not_empty3}</td>
         </tr>
 
         <tr>
             <td>Publication Date</td>
-            <td><input type="text" id="datepicker" name="p_date" path="publication_date"></td>
+            <td><input type="text" id="datepicker" name="p_date" path="publication_date" value=${p.getPublication_date()} disabled="disabled"></td>
+
         </tr>
 
         <tr>
             <td>Quantity</td>
-            <td><input type="number" name="quantity" path="quantity"></td>
+            <td><input type="number" name="quantity" path="quantity" value=${p.getQuantity()} disabled="disabled"></td>
             <td>${not_empty5}</td>
             <td>${quantity}</td>
+
         </tr>
 
         <tr>
             <td>Price</td>
-            <td><input type="number" path="price" name="price"></td>
+            <td><input type="number" path="price" name="price" value=${p.getPrice()} disabled="disabled"></td>
             <td>${not_empty6}</td>
             <td>${price}</td>
+
         </tr>
 
         <tr>
@@ -114,7 +119,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         </tr>
 
         <tr>
-            <td><input type="submit" name="action" value="insert"></td>
+            <td><input type="submit" name="action" value="Update"></td>
 
         </tr>
 

@@ -10,6 +10,7 @@ import com.amazonaws.services.s3.AmazonS3;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.slf4j.Logger;
@@ -56,6 +57,8 @@ public class AmazonClient {
         String fileUrl = "";
         try {
             File file = convertMultiPartToFile(multipartFile);
+            file.canWrite();
+            file.canRead();
             String fileName = generateFileName(multipartFile);
             fileUrl = "https://s3.amazonaws.com" + "/" + bucketName + "/" + fileName;
             uploadFileTos3bucket(fileName, file);
@@ -92,7 +95,7 @@ public class AmazonClient {
 
     private void uploadFileTos3bucket(String fileName, File file) {
         s3client.putObject(
-                new PutObjectRequest(bucketName, fileName, file));
+                new PutObjectRequest(bucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
         //.withCannedAcl(CannedAccessControlList.PublicRead));
     }
 
