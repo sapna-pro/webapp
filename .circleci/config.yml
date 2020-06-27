@@ -18,9 +18,8 @@ jobs:
              echo 'test'
              pwd
              ls -al
-             cd assignment
-             mvn clean install
              zip -r webapp.zip -i webapp/
+             ls -al
              sudo chmod 775 webapp.zip
              ls
        - aws-s3/copy:
