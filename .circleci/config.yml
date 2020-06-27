@@ -19,6 +19,6 @@ jobs:
              mvn clean install
        - aws-s3/copy:
           from: assignment/pom.xml
-          to: 's3://codedeploye.sapnapatel.me'
+          to: 's3://codedeploy.sapnapatel.me'
 orbs:
   aws-s3: circleci/aws-s3@1.0.15  
