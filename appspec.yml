@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+files:
+  - source: webapp/assignment-0.0.1-SNAPSHOT.war
+    destination: /home/ubuntu/
+hooks:
+  ApplicationStop:
+    - location: codedeploy/stop_server.sh
+      timeout: 300
+      runas: ubuntu
+  BeforeInstall:
+    - location: codedeploy/install_dependencies.sh
+      timeout: 300
+      runas: ubuntu
+  ApplicationStart:
+    - location: codedeploy/start_server.sh
+      timeout: 300
+      runas: ubuntu
