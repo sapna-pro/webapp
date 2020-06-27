@@ -21,7 +21,9 @@ jobs:
              cd assignment
              mvn package
              echo 'build successful'
-             ls -al build/libs
+             ls -al
+             cd ..
+             ls -al
              mkdir codedeploy_artifact
              ls
        - aws-s3/copy:
