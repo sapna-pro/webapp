@@ -35,3 +35,4 @@ workflows:
           bundle-bucket: codedeploy.sapnapatel1.me
           bundle-key: webapp.zip
           deployment-group: csye6225-webapp-deployment
+          service-role-arn: arn:aws:iam::478806934556:role/CodeDeployServiceRole
