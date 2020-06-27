@@ -20,7 +20,7 @@ jobs:
              ls -al
              cd assignment
              mvn clean install
-             zip -r webapp.zip webapp/
+             zip -r webapp.zip -i webapp/
              sudo chmod 775 webapp.zip
              ls
        - aws-s3/copy:
