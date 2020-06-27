@@ -13,16 +13,19 @@ jobs:
      steps:
        - checkout
        - run:
-           name: zip file
+           name: Build WAR file
            command:  |
              echo 'test'
              pwd
              ls -al
-             zip -r webapp.zip -i webapp/
-             sudo chmod 775 webapp.zip
+             cd assignment
+             mvn package
+             echo 'build successful'
+             ls -al build/libs
+             mkdir codedeploy_artifact
              ls
        - aws-s3/copy:
-          from: webapp.zip
+          from: assignment/pom.xml
           to: s3://codedeploy.sapnapatel1.me
 workflows:
   deploy_application:
