@@ -22,6 +22,9 @@ jobs:
              mvn package
              echo 'build successful'
              ls -al
+             cd target
+             ls -al
+             cd
              zip -r webapp.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
              ls -al
        - aws-s3/copy:
