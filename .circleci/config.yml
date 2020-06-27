@@ -18,7 +18,6 @@ jobs:
              cd assignment
              mvn clean install
        - aws-s3/copy:
-          arguments: '--dry-run'
           from: assignment/pom.xml
           to: 's3://codedeploye.sapnapatel.me'
 orbs:
