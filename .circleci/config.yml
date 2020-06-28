@@ -25,24 +25,8 @@ jobs:
              cd ..
              ls -al
              pwd
-             mkdir code_artifact
-             cp assignment/target/assignment-0.0.1-SNAPSHOT.war code_artifact
-             cp appspec.yml code_artifact
-             cp codedeploy/*.sh code_artifact
-             zip -r code_artifact.zip code_artifact/
              zip -r webapp.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
              sudo chmod 755 webapp.zip
              ls -al
-       - aws-s3/copy:
-          from: code_artifact.zip
-          to: s3://codedeploy.sapnapatel1.me
-workflows:
-  deploy_application:
-    jobs:
-      - build
-      - aws-code-deploy/deploy:
-          application-name: csye6225_webapp
-          bundle-bucket: codedeploy.sapnapatel1.me
-          bundle-key: code_artifact
-          deployment-group: csye6225-webapp-deployment
-          service-role-arn: arn:aws:iam::478806934556:role/CodeDeployServiceRole
+             aws s3 cp webapp.zip s3://codedeploy.sapnapatel1.me
+             aws deploy create-deployment --application-name csye6225_webapp --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name csye6225-webapp-deployment --description "CSYE6225 - Codedeploy" --region=us-east-1 --s3-location bucket=codedeploy.sapnapatel1.me,bundleType=zip,key=webapp.zip
