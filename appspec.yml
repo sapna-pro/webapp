@@ -12,15 +12,16 @@ permissions:
      type:
        - file
 hooks:
-  ApplicationStop:
-    - location: codedeploy/stop_server.sh
+  ApplicationStart:
+    - location: codedeploy/start_server.sh
       timeout: 300
       runas: ubuntu
   BeforeInstall:
     - location: codedeploy/install_dependencies.sh
       timeout: 300
       runas: ubuntu
-  ApplicationStart:
-    - location: codedeploy/start_server.sh
+  ApplicationStop:
+    - location: codedeploy/stop_server.sh
       timeout: 300
-      runas: ubuntu
+      runas: ubuntu    
+  

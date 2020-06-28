@@ -25,7 +25,9 @@ jobs:
              cd target
              ls -al
              cd
-             zip deploy.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
+             ls -al
+             pwd
+            #  zip deploy.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
              ls -al
        - aws-s3/copy:
           from: deploy.zip
