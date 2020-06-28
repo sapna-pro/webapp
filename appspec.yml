@@ -1,13 +1,13 @@
 version: 0.0
 os: linux
 files:
-  - source: webapp/assignment-0.0.1-SNAPSHOT.war
+  - source: /webapp/
     destination: /home/ubuntu/
 permissions:
    - object: /home/ubuntu/
      pattern: "**"
-     owner: apache
-     group: apache
+     owner: ubuntu
+     group: ubuntu
      mode: 755
      type:
        - file
