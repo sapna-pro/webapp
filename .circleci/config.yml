@@ -25,6 +25,7 @@ jobs:
              cd target
              ls -al
              cd
+             cd project
              ls -al
              pwd
              zip webapp.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
