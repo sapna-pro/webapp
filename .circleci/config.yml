@@ -29,7 +29,7 @@ jobs:
              cp assignment/target/assignment-0.0.1-SNAPSHOT.war code_artifact
              cp appspec.yml code_artifact
              cp codedeploy/*.sh code_artifact
-             zip -r code_artifact
+             zip -r code_artifact.zip code_artifact/
              zip -r webapp.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
              sudo chmod 755 webapp.zip
              ls -al
