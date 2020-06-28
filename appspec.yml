@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: webapp/assignment-0.0.1-SNAPSHOT.war
+  - source: assignment/target/assignment-0.0.1-SNAPSHOT.war
     destination: /home/ubuntu
 permissions:
    - object: /home/ubuntu/
