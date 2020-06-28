@@ -35,6 +35,9 @@ jobs:
              aws s3 cp webapp.zip s3://codedeploy.sapnapatel1.me
              aws deploy create-deployment --application-name csye6225_webapp --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name csye6225-webapp-deployment --description "CSYE6225 - Codedeploy" --region=us-east-1 --s3-location bucket=codedeploy.sapnapatel1.me,bundleType=zip,key=webapp.zip
 
+
+             
+
 # workflows:
 #   deploy_application:
 #     jobs:
