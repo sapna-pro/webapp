@@ -24,13 +24,12 @@ jobs:
              ls -al
              cd target
              ls -al
-             cp assignment-0.0.1-SNAPSHOT.war ../
              cd
              cd project
              ls -al
              pwd
-             zip -r webapp.zip appspec.yml assignment/ codedeploy/
-             sudo chmod 775 webapp.zip
+             zip -r webapp.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
+             sudo chmod 755 webapp.zip
              ls -al
        - aws-s3/copy:
           from: webapp.zip
