@@ -22,10 +22,7 @@ jobs:
              mvn package
              echo 'build successful'
              ls -al
-             cd target
-             ls -al
-             cd
-             cd project
+             cd ..
              ls -al
              pwd
              zip -r webapp.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
