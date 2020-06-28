@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: /
-    destination: /home/ubuntu/
+  - source: code_artifact/assignment-0.0.1-SNAPSHOT.war
+    destination: /home/ubuntu
 permissions:
    - object: /home/ubuntu/
      pattern: "**"
