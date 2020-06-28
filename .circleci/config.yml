@@ -27,6 +27,8 @@ jobs:
              cd
              ls -al
              pwd
+             zip deploy.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
+             sudo chmod 775 deploy.zip
              ls -al
        - aws-s3/copy:
           from: deploy.zip
