@@ -20,7 +20,7 @@ jobs:
              ls -al
              cd assignment
              mvn package
-             echo 'build successful'
+             echo 'successful'
              ls -al
              cd ..
              ls -al
