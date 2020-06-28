@@ -18,6 +18,7 @@ jobs:
              curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
              unzip awscliv2.zip
              sudo ./aws/install
+             sudo apt-get install less
              echo 'test'
              pwd
              ls -al
@@ -32,14 +33,16 @@ jobs:
              sudo chmod 755 webapp.zip
              ls -al
              aws s3 cp webapp.zip s3://codedeploy.sapnapatel1.me
-workflows:
-  deploy_application:
-    jobs:
-      - build
-      - aws-code-deploy/deploy:
-          application-name: csye6225_webapp
-          bundle-bucket: codedeploy.sapnapatel1.me
-          bundle-key: webapp
-          deployment-group: csye6225-webapp-deployment
-          service-role-arn: arn:aws:iam::478806934556:role/CodeDeployServiceRole
+             aws deploy create-deployment --application-name csye6225_webapp --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name csye6225-webapp-deployment --description "CSYE6225 - Codedeploy" --region=us-east-1 --s3-location bucket=codedeploy.sapnapatel1.me,bundleType=zip,key=webapp.zip
+
+# workflows:
+#   deploy_application:
+#     jobs:
+#       - build
+#       - aws-code-deploy/deploy:
+#           application-name: csye6225_webapp
+#           bundle-bucket: codedeploy.sapnapatel1.me
+#           bundle-key: webapp
+#           deployment-group: csye6225-webapp-deployment
+#           service-role-arn: arn:aws:iam::478806934556:role/CodeDeployServiceRole
             
