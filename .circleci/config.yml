@@ -24,6 +24,7 @@ jobs:
              ls -al
              cd target
              ls -al
+             cp assignment-0.0.1-SNAPSHOT.war ../
              cd
              cd project
              ls -al
