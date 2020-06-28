@@ -28,11 +28,13 @@ jobs:
              cd project
              ls -al
              pwd
-             zip webapp.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
-             sudo chmod 775 webapp.zip
+             zip deploy.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
+             sudo chmod 775 deploy.zip
+             unzip deploy
+             pwd
              ls -al
        - aws-s3/copy:
-          from: webapp.zip
+          from: deploy.zip
           to: s3://codedeploy.sapnapatel1.me
 workflows:
   deploy_application:
@@ -41,6 +43,6 @@ workflows:
       - aws-code-deploy/deploy:
           application-name: csye6225_webapp
           bundle-bucket: codedeploy.sapnapatel1.me
-          bundle-key: webapp
+          bundle-key: deploy
           deployment-group: csye6225-webapp-deployment
           service-role-arn: arn:aws:iam::478806934556:role/CodeDeployServiceRole
