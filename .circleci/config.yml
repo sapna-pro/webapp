@@ -23,12 +23,13 @@ jobs:
              echo 'build successful'
              ls -al
              cd target
+             cp assignment-0.0.1-SNAPSHOT.war assignment
              ls -al
              cd
              cd project
              ls -al
              pwd
-             zip webapp.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
+             zip webapp.zip appspec.yml assignment/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
              sudo chmod 775 webapp.zip
              mkdir abc
              cp webapp.zip abc
