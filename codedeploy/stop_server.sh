@@ -1,3 +1,3 @@
 #!bin/bash
-echo "stop serverdgdfgd"
+echo "stop serverdgdfgdgjh"
 sudo service tomcat8 stop
