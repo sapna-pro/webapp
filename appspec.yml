@@ -3,6 +3,14 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/
+permissions:
+  - object: /home/ubuntu/
+    pattern: "**"
+    owner: ubuntu
+    group: ubuntu
+    mode: 755
+    type:
+       - file
 hooks:
   ApplicationStart:
     - location: codedeploy/start_server.sh
