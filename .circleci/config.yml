@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  aws-code-deploy: circleci/aws-code-deploy@1.0.1
 jobs:
   build:
      docker:
@@ -27,16 +29,14 @@ jobs:
              sudo chmod 775 webapp.zip
              ls -al
              aws s3 cp webapp.zip s3://codedeploy.sapnapatel1.me
-             aws deploy create-deployment --application-name csye6225_webapp --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name csye6225-webapp-deployment --description "CSYE6225 - Codedeploy" --region=us-east-1 --s3-location bucket=codedeploy.sapnapatel1.me,bundleType=zip,key=webapp.zip
-
-# workflows:
-#   deploy_application:
-#     jobs:
-#       - build
-#       - aws-code-deploy/deploy:
-#           application-name: csye6225_webapp
-#           bundle-bucket: codedeploy.sapnapatel1.me
-#           bundle-key: webapp
-#           deployment-group: csye6225-webapp-deployment
-#           service-role-arn: arn:aws:iam::478806934556:role/CodeDeployServiceRole
+workflows:
+  deploy_application:
+    jobs:
+      - build
+      - aws-code-deploy/deploy:
+          application-name: csye6225_webapp
+          bundle-bucket: codedeploy.sapnapatel1.me
+          bundle-key: webapp
+          deployment-group: csye6225-webapp-deployment
+          service-role-arn: arn:aws:iam::478806934556:role/CodeDeployServiceRole
             
