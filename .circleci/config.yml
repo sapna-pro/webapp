@@ -23,7 +23,7 @@ jobs:
              cd ..
              ls -al
              pwd
-             zip -r webapp.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh
+             zip -r webapp.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/start_server.sh
              sudo chmod 775 webapp.zip
              ls -al
              aws s3 cp webapp.zip s3://codedeploy.sapnapatel1.me
