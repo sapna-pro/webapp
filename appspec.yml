@@ -7,5 +7,5 @@ hooks:
   ApplicationStart:
     - location: ./codedeploy/start_server.sh
       timeout: 300
-      runas: ubuntu
+      runas: root
   
