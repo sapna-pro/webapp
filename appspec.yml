@@ -1,27 +1,12 @@
 version: 0.0
 os: linux
 files:
-  - source: assignment/target/assignment-0.0.1-SNAPSHOT.war
-    destination: /home/ubuntu
-permissions:
-   - object: /home/ubuntu/
-     pattern: "**"
-     owner: ubuntu
-     group: ubuntu
-     mode: 755
-     type:
-       - file
+  - source: /
+    destination: /home/ubuntu/
 hooks:
   ApplicationStart:
     - location: codedeploy/start_server.sh
       timeout: 300
       runas: ubuntu
-  ApplicationStop:
-    - location: codedeploy/stop_server.sh
-      timeout: 300
-      runas: ubuntu
-  BeforeInstall:
-    - location: codedeploy/install_dependencies.sh
-      timeout: 300
-      runas: ubuntu
+
   
