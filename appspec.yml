@@ -13,11 +13,11 @@ permissions:
        - file
 hooks:
   ApplicationStart:
-    - location: codedeploy/start_server.sh
+    - location: ./codedeploy/start_server.sh
       timeout: 300
       runas: ubuntu
   ApplicationStop:
-    - location: codedeploy/stop_server.sh
+    - location: ./codedeploy/stop_server.sh
       timeout: 300
       runas: ubuntu
 
