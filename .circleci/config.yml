@@ -3,6 +3,8 @@ jobs:
   build:
      docker:
        - image: circleci/openjdk:8-jdk
+         environment:
+         AWS_PAGER: ""
      steps:
        - checkout
        - run:
