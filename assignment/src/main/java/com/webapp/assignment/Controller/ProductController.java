@@ -14,10 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -61,7 +62,7 @@ public class ProductController {
         List<MultipartFile> file1 = Arrays.asList(image);
         List<String> urllist = new ArrayList<>();
 
-        System.out.println(file1+"###################list multiple file");
+       // System.out.println(file1+"###################list multiple file");
 
         if(request.getParameter("isbn") == null || request.getParameter("isbn").equals("")){
             attributes.addFlashAttribute("not_empty1","Fileld should not be emplty");
@@ -131,32 +132,70 @@ public class ProductController {
         HttpSession session=request.getSession();
         List<Product> abc = productService.sortBySeller((User) session.getAttribute("logged_user"));
         model.addAttribute("filterproduct",productService.sortBySeller((User) session.getAttribute("logged_user")));
-        System.out.println(abc + "filterlist");
+        //System.out.println(abc + "filterlist");
         return "MyProduct";
     }
 
     @GetMapping("/delete_product{id}")
     public String DeleteProduct(@PathVariable("id") int id,Model model){
-        productService.DeleteProduct(id);
-        return "redirect:/MyProduct";
+
+        try{
+            Product product = productService.getProduct(id);
+            List<String> imageurl = product.getImages();
+            for (String abc: imageurl) {
+                client.deleteFileFromS3Bucket(abc);
+            }
+            productService.DeleteProduct(id);
+            return "redirect:/MyProduct";
+        }catch (Exception e){
+            return "redirect:/product_all";
+        }
+
+
     }
 
     @GetMapping("/delete_img{id}")
     public String DeleteImage(@PathVariable("id") int id,Model model,HttpServletRequest request){
         Product product = productService.getProduct(id);
-        String a = " ";
-        List<String> blanklist = new ArrayList<>();
-        List<String> imageurl = product.getImages();
-        for (String abc: imageurl) {
-            client.deleteFileFromS3Bucket(abc);
-            blanklist.add(" ");
-        }
-        product.setImages(blanklist);
-//        String abc = client.deleteFileFromS3Bucket(fileurl);
-//        product.setImagepath(a);
-        productService.AddDetail(product);
-        return "redirect:/MyProduct";
+        model.addAttribute("imageproduct",product);
+
+//        String a = " ";
+//        List<String> blanklist = new ArrayList<>();
+//        List<String> imageurl = product.getImages();
+//        for (String abc: imageurl) {
+//            client.deleteFileFromS3Bucket(abc);
+//            blanklist.add(" ");
+//        }
+//        product.setImages(blanklist);
+////        String abc = client.deleteFileFromS3Bucket(fileurl);
+////        product.setImagepath(a);
+//        productService.AddDetail(product);
+        return "delete_image";
     }
+
+    @PostMapping("/selectedimage")
+    public String selectedimage(@RequestParam("s1") String imageurl,HttpServletRequest request){
+
+            try {
+                Product product = productService.getProduct(Integer.parseInt(request.getParameter("id")));
+                List<String> url = product.getImages();
+                for (String abc : url) {
+                    if (abc.equals(imageurl)) {
+                        url.remove(abc);
+                    }
+                }
+                product.setImages(url);
+                productService.AddDetail(product);
+                client.deleteFileFromS3Bucket(imageurl);
+                return "product_all";
+            }catch (Exception e){
+                return "product_all";
+            }
+
+    }
+
+
+
 
     @GetMapping("/Update_product{id}")
     public String getUpdateProduct(@PathVariable("id") int id,Model model){
@@ -230,7 +269,7 @@ public class ProductController {
         int id = Integer.parseInt(request.getParameter("id"));
         Product product = productService.getProduct(id);
        // List<MultipartFile> file1 = Arrays.asList(image);
-        List<String> urllist = new ArrayList<>();
+        List<String> urllist = product.getImages();
         for(MultipartFile file : image){
             String url =  client.uploadFile(file);
             urllist.add(url);

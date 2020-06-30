@@ -1,0 +1,11 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ubuntu/
+hooks:
+  ApplicationStart:
+    - location: ./codedeploy/start_server.sh
+      timeout: 300
+      runas: ubuntu
+  
