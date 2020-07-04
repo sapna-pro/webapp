@@ -46,17 +46,24 @@ public class AmazonClient {
 
 
     private Logger logger = LoggerFactory.getLogger(AmazonClient.class);
+//    @Bean
+//    public AmazonS3 amazonS3() {
+//        InstanceProfileCredentialsProvider provider
+//                = new InstanceProfileCredentialsProvider(true);
+//        return AmazonS3ClientBuilder.standard()
+//                .withCredentials(provider)
+//                .build();
+//    }
 
     @PostConstruct
     private void initializeAmazon() {
 
-//        s3client = AmazonS3ClientBuilder.standard()
-//                .withCredentials(new InstanceProfileCredentialsProvider(false))
-//                .build();
-
-
-        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
-        this.s3client = new AmazonS3Client(credentials);
+        s3client = AmazonS3ClientBuilder.standard()
+                .withCredentials(new InstanceProfileCredentialsProvider(true))
+                .build();
+        
+//        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+//        this.s3client = new AmazonS3Client(credentials);
         logger.info("client created");
     }
 
