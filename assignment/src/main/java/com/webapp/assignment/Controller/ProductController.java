@@ -146,6 +146,7 @@ public class ProductController {
                 client.deleteFileFromS3Bucket(abc);
             }
             productService.DeleteProduct(id);
+
             return "redirect:/MyProduct";
         }catch (Exception e){
             return "redirect:/product_all";

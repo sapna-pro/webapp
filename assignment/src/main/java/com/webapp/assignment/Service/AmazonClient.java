@@ -5,6 +5,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 
@@ -44,23 +45,39 @@ public class AmazonClient {
     private String secretKey;
 
 
+    private Logger logger = LoggerFactory.getLogger(AmazonClient.class);
+//    @Bean
+//    public AmazonS3 amazonS3() {
+//        InstanceProfileCredentialsProvider provider
+//                = new InstanceProfileCredentialsProvider(true);
+//        return AmazonS3ClientBuilder.standard()
+//                .withCredentials(provider)
+//                .build();
+//    }
+
     @PostConstruct
     private void initializeAmazon() {
-        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
-        this.s3client = new AmazonS3Client(credentials);
-    }
 
-    private Logger logger = LoggerFactory.getLogger(AmazonClient.class);
+        s3client = AmazonS3ClientBuilder.standard()
+                .withCredentials(new InstanceProfileCredentialsProvider(true))
+                .build();
+        
+//        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+//        this.s3client = new AmazonS3Client(credentials);
+        logger.info("client created");
+    }
 
     public String uploadFile(MultipartFile multipartFile) throws IOException {
 
         String fileUrl = "";
         try {
+            logger.info("Inside try of upload");
             File file = convertMultiPartToFile(multipartFile);
             file.canWrite();
             file.canRead();
             String fileName = generateFileName(multipartFile);
             fileUrl = "https://s3.amazonaws.com" + "/" + bucketName + "/" + fileName;
+            logger.info("File URL is " + fileUrl);
             uploadFileTos3bucket(fileName, file);
             file.delete();
         } /*catch (Exception e) {
