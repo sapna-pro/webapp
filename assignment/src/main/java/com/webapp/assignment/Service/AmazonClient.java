@@ -61,7 +61,8 @@ public class AmazonClient {
         s3client = AmazonS3ClientBuilder.standard()
                 .withCredentials(new InstanceProfileCredentialsProvider(true))
                 .build();
-        
+
+
 //        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
 //        this.s3client = new AmazonS3Client(credentials);
         logger.info("client created");
