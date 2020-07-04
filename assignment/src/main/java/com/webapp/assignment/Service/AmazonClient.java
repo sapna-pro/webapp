@@ -50,14 +50,14 @@ public class AmazonClient {
     @PostConstruct
     private void initializeAmazon() {
 
-        s3client = AmazonS3ClientBuilder.standard()
-                .withCredentials(new InstanceProfileCredentialsProvider(false))
-                .build();
+//        s3client = AmazonS3ClientBuilder.standard()
+//                .withCredentials(new InstanceProfileCredentialsProvider(false))
+//                .build();
+
+
+        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+        this.s3client = new AmazonS3Client(credentials);
         logger.info("client created");
-
-
-//        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
-//        this.s3client = new AmazonS3Client(credentials);
     }
 
     public String uploadFile(MultipartFile multipartFile) throws IOException {
