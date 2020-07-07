@@ -25,7 +25,7 @@ jobs:
              cd ..
              ls -al
              pwd
-             zip -r webapp${CIRCLE_BUILD_NUM}.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/start_server.sh
+             zip -r webapp${CIRCLE_BUILD_NUM}.zip appspec.yml assignment/target/assignment-0.0.1-SNAPSHOT.war codedeploy/*.sh assignment/src/main/java/com/webapp/assignment/config.json
              sudo chmod 775 webapp${CIRCLE_BUILD_NUM}.zip
              ls -al
              aws s3 cp webapp${CIRCLE_BUILD_NUM}.zip s3://codedeploy.sapnapatel1.me
