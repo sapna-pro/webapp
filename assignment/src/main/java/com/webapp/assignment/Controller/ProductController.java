@@ -140,13 +140,25 @@ public class ProductController {
     public String DeleteProduct(@PathVariable("id") int id,Model model){
 
         try{
+            List<Cart> allProduct = cartRepository.findAll();
             Product product = productService.getProduct(id);
             List<String> imageurl = product.getImages();
             for (String abc: imageurl) {
                 client.deleteFileFromS3Bucket(abc);
             }
-            productService.DeleteProduct(id);
-
+            if(allProduct.isEmpty()) {
+                productService.DeleteProduct(id);
+                System.out.println("in product delete if condition");
+            }else{
+                for (Cart cart : allProduct) {
+                    if (cart.getProduct().equals(product)) {
+                        int cartId = cart.getId();
+                        cartRepository.deleteById(cartId);
+                        System.out.println("in cart for loop");
+                    }
+                }
+            }
+//            productService.DeleteProduct(id);
             return "redirect:/MyProduct";
         }catch (Exception e){
             return "redirect:/product_all";
