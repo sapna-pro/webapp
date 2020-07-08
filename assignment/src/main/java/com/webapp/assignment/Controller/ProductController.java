@@ -27,6 +27,7 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Blob;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,6 +63,7 @@ public class ProductController {
 
         HttpSession session = request.getSession();
         statsDClient.incrementCounter("enpoint.AddProduct.http.post");
+        
         int quantity = (Integer.parseInt(request.getParameter("quantity")));
         double price = (Double.parseDouble(request.getParameter("price")));
        // Product_image product_image = new Product_image();
@@ -118,7 +120,10 @@ public class ProductController {
                     urllist.add(url);
                 }
                 product.setImages(urllist);
+                long start = System.currentTimeMillis();
                 productService.AddDetail(product);
+                long time = System.currentTimeMillis() - start;
+                statsDClient.recordExecutionTime("Addbook",time);
                 return "product_all";
             } catch (Exception e) {
                 return "AddProduct";
@@ -128,7 +133,10 @@ public class ProductController {
 
     @GetMapping("/product_all")
     public String getAllProducts(Model model,HttpServletRequest request) {
+        long start = System.currentTimeMillis();
         model.addAttribute("products",productService.getAllProducts());
+        long time = System.currentTimeMillis() - start;
+        statsDClient.recordExecutionTime("AllBooks",time);
         HttpSession session=request.getSession();
         return "product_all";
     }
@@ -137,7 +145,10 @@ public class ProductController {
     public String MyProduct(Model model,HttpServletRequest request) {
         HttpSession session=request.getSession();
         List<Product> abc = productService.sortBySeller((User) session.getAttribute("logged_user"));
+        long start = System.currentTimeMillis();
         model.addAttribute("filterproduct",productService.sortBySeller((User) session.getAttribute("logged_user")));
+        long time = System.currentTimeMillis() - start;
+        statsDClient.recordExecutionTime("Sort_seller_book",time);
         //System.out.println(abc + "filterlist");
         return "MyProduct";
     }
@@ -153,8 +164,11 @@ public class ProductController {
                 client.deleteFileFromS3Bucket(abc);
             }
             if(allProduct.isEmpty()) {
+                long start = System.currentTimeMillis();
                 productService.DeleteProduct(id);
-                System.out.println("in product delete if condition");
+                long time = System.currentTimeMillis() - start;
+                statsDClient.recordExecutionTime("Delete_book",time);
+                //System.out.println("in product delete if condition");
             }else{
                 for (Cart cart : allProduct) {
                     if (cart.getProduct().equals(product)) {
@@ -232,7 +246,10 @@ public class ProductController {
                 int quantity = (Integer.parseInt(request.getParameter("quantity")));
                 Double price = (Double.parseDouble(request.getParameter("price")));
                 int id = (Integer.parseInt(request.getParameter("id")));
+                long start = System.currentTimeMillis();
                 productService.UpdateProduct(isbn, title, author, price, pdate, quantity, id);
+                long time = System.currentTimeMillis() - start;
+                statsDClient.recordExecutionTime("Update_book",time);
                 return "product_all";
             }catch (Exception e){
                 return "redirect:/Update_product";
@@ -293,8 +310,11 @@ public class ProductController {
             String url =  client.uploadFile(file);
             urllist.add(url);
         }
+        long start = System.currentTimeMillis();
         product.setImages(urllist);
         productService.AddDetail(product);
+        long time = System.currentTimeMillis() - start;
+        statsDClient.recordExecutionTime("update_image",time);
         return "redirect:/MyProduct";
     }
 
