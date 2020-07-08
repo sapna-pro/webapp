@@ -5,8 +5,11 @@ import com.timgroup.statsd.StatsDClient;
 import com.webapp.assignment.Entity.Product;
 import com.webapp.assignment.Entity.User;
 import com.webapp.assignment.Repository.UserRepository;
+import com.webapp.assignment.Service.AmazonClient;
 import com.webapp.assignment.Service.Userservice;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,6 +41,8 @@ public class MainController {
 
     private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
     private static final String email_PATTERN = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+
+    private Logger logger = LoggerFactory.getLogger(MainController.class);
 
     @Autowired
     private StatsDClient statsDClient;
@@ -148,6 +153,7 @@ public class MainController {
                 userservice.saveUser(user);
                 long time = System.currentTimeMillis() - start;
                 statsDClient.recordExecutionTime("Sign_up",time);
+                logger.info("User Signup");
                 session.setAttribute("user", user);
                 session.setAttribute("logged_user",user);
                 model.addAttribute("email", user.getEmailid());
@@ -264,6 +270,7 @@ public class MainController {
             userRepository.save(update_user);
             long time = System.currentTimeMillis() - start;
             statsDClient.recordExecutionTime("update_user_info",time);
+            logger.info("user update");
         }
         return modelAndView;
    }
@@ -345,6 +352,7 @@ public class MainController {
             userRepository.save(update_user);
             long time = System.currentTimeMillis() - start;
             statsDClient.recordExecutionTime("update_user_info",time);
+            logger.info("update user info");
             modelAndView.setViewName("login");
         }
 

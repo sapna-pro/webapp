@@ -14,8 +14,10 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.timgroup.statsd.StatsDClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +46,8 @@ public class AmazonClient {
     @Value("${aws.access.key.secret}")
     private String secretKey;
 
-
+    @Autowired
+    private StatsDClient statsDClient;
     private Logger logger = LoggerFactory.getLogger(AmazonClient.class);
 //    @Bean
 //    public AmazonS3 amazonS3() {
@@ -107,13 +110,19 @@ public class AmazonClient {
     public String deleteFileFromS3Bucket(String fileUrl) {
         String fileName = fileUrl.substring(fileUrl.lastIndexOf("/") + 1);
         System.out.println(fileName + "filename");
+        long start = System.currentTimeMillis();
         s3client.deleteObject(new DeleteObjectRequest(bucketName,fileName));
+        long time = System.currentTimeMillis() - start;
+        statsDClient.recordExecutionTime("deleteImageS3",time);
         return "Successfully deleted";
     }
 
     private void uploadFileTos3bucket(String fileName, File file) {
+        long start = System.currentTimeMillis();
         s3client.putObject(
                 new PutObjectRequest(bucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
+        long time = System.currentTimeMillis() - start;
+        statsDClient.recordExecutionTime("S3Imageinsert",time);
         //.withCannedAcl(CannedAccessControlList.PublicRead));
     }
 
