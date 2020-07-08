@@ -69,7 +69,7 @@ public class MainController {
 
     @RequestMapping(value={"/", "/Welcome"}, method = RequestMethod.GET)
     public String Welcome(Model model) {
-        statsDClient.incrementCounter("enpoint.homepage.http.get");
+        //statsDClient.incrementCounter("enpoint.homepage.http.get");
         return "Welcome";
 
     }
@@ -144,7 +144,10 @@ public class MainController {
                 user.setPassword(bCryptPasswordEncoder.encode(request.getParameter("psw")));
                 user.setFname(request.getParameter("fname"));
                 user.setLname(request.getParameter("lname"));
+                long start = System.currentTimeMillis();
                 userservice.saveUser(user);
+                long time = System.currentTimeMillis() - start;
+                statsDClient.recordExecutionTime("Sign_up",time);
                 session.setAttribute("user", user);
                 session.setAttribute("logged_user",user);
                 model.addAttribute("email", user.getEmailid());
@@ -257,7 +260,10 @@ public class MainController {
             update_user.setFname(request.getParameter("fname"));
             update_user.setLname(request.getParameter("lname"));
             update_user.setPassword(request.getParameter("psw"));
+            long start = System.currentTimeMillis();
             userRepository.save(update_user);
+            long time = System.currentTimeMillis() - start;
+            statsDClient.recordExecutionTime("update_user_info",time);
         }
         return modelAndView;
    }
@@ -335,7 +341,10 @@ public class MainController {
             update_user.setFname(request.getParameter("fname"));
             update_user.setLname(request.getParameter("lname"));
             update_user.setPassword(bCryptPasswordEncoder.encode(request.getParameter("psw")));
+            long start = System.currentTimeMillis();
             userRepository.save(update_user);
+            long time = System.currentTimeMillis() - start;
+            statsDClient.recordExecutionTime("update_user_info",time);
             modelAndView.setViewName("login");
         }
 
