@@ -145,10 +145,7 @@ public class ProductController {
     public String MyProduct(Model model,HttpServletRequest request) {
         HttpSession session=request.getSession();
         List<Product> abc = productService.sortBySeller((User) session.getAttribute("logged_user"));
-        long start = System.currentTimeMillis();
         model.addAttribute("filterproduct",productService.sortBySeller((User) session.getAttribute("logged_user")));
-        long time = System.currentTimeMillis() - start;
-        statsDClient.recordExecutionTime("Sort_seller_book",time);
         //System.out.println(abc + "filterlist");
         return "MyProduct";
     }
