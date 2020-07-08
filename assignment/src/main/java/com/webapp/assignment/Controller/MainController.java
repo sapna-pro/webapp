@@ -1,6 +1,7 @@
 package com.webapp.assignment.Controller;
 
 
+import com.timgroup.statsd.StatsDClient;
 import com.webapp.assignment.Entity.Product;
 import com.webapp.assignment.Entity.User;
 import com.webapp.assignment.Repository.UserRepository;
@@ -38,6 +39,8 @@ public class MainController {
     private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
     private static final String email_PATTERN = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
+    @Autowired
+    private StatsDClient statsDClient;
 
     public boolean validate(final String password){
         pattern = Pattern.compile(PASSWORD_PATTERN);
@@ -66,6 +69,7 @@ public class MainController {
 
     @RequestMapping(value={"/", "/Welcome"}, method = RequestMethod.GET)
     public String Welcome(Model model) {
+        statsDClient.incrementCounter("enpoint.homepage.http.get");
         return "Welcome";
 
     }

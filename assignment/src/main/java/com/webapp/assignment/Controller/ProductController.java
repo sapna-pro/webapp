@@ -1,6 +1,7 @@
 package com.webapp.assignment.Controller;
 
 import com.amazonaws.services.dynamodbv2.xspec.L;
+import com.timgroup.statsd.StatsDClient;
 import com.webapp.assignment.Entity.Cart;
 import com.webapp.assignment.Entity.Product;
 import com.webapp.assignment.Entity.Product_image;
@@ -45,8 +46,12 @@ public class ProductController {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private StatsDClient statsDClient;
+
     @GetMapping("/AddProduct")
     public String AddPage(Model model){
+        statsDClient.incrementCounter("enpoint.AddProduct.http.get");
         model.addAttribute("product",new Product());
         return "AddProduct";
     }
@@ -56,6 +61,7 @@ public class ProductController {
                             @RequestParam("image") MultipartFile[] image) throws IOException {
 
         HttpSession session = request.getSession();
+        statsDClient.incrementCounter("enpoint.AddProduct.http.post");
         int quantity = (Integer.parseInt(request.getParameter("quantity")));
         double price = (Double.parseDouble(request.getParameter("price")));
        // Product_image product_image = new Product_image();
