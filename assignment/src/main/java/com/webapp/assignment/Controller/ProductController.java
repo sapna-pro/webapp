@@ -55,7 +55,7 @@ public class ProductController {
     private Logger logger = LoggerFactory.getLogger(ProductController.class);
     @GetMapping("/AddProduct")
     public String AddPage(Model model){
-        statsDClient.incrementCounter("enpoint.AddProduct.http.get");
+        //statsDClient.incrementCounter("enpoint.AddProduct.http.get");
         model.addAttribute("product",new Product());
         return "AddProduct";
     }
