@@ -11,6 +11,8 @@ import com.webapp.assignment.Service.AmazonClient;
 import com.webapp.assignment.Service.CartService;
 import com.webapp.assignment.Service.ProductService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,6 +52,7 @@ public class ProductController {
     @Autowired
     private StatsDClient statsDClient;
 
+    private Logger logger = LoggerFactory.getLogger(ProductController.class);
     @GetMapping("/AddProduct")
     public String AddPage(Model model){
         statsDClient.incrementCounter("enpoint.AddProduct.http.get");
@@ -62,7 +65,8 @@ public class ProductController {
                             @RequestParam("image") MultipartFile[] image) throws IOException {
 
         HttpSession session = request.getSession();
-        statsDClient.incrementCounter("enpoint.AddProduct.http.post");
+        logger.info("Inside AddBook");
+        //statsDClient.incrementCounter("enpoint.AddProduct.http.post");
         
         int quantity = (Integer.parseInt(request.getParameter("quantity")));
         double price = (Double.parseDouble(request.getParameter("price")));
@@ -133,6 +137,7 @@ public class ProductController {
 
     @GetMapping("/product_all")
     public String getAllProducts(Model model,HttpServletRequest request) {
+        logger.info("show all product");
         long start = System.currentTimeMillis();
         model.addAttribute("products",productService.getAllProducts());
         long time = System.currentTimeMillis() - start;
@@ -143,16 +148,21 @@ public class ProductController {
 
     @GetMapping("/MyProduct")
     public String MyProduct(Model model,HttpServletRequest request) {
-        HttpSession session=request.getSession();
-        List<Product> abc = productService.sortBySeller((User) session.getAttribute("logged_user"));
-        model.addAttribute("filterproduct",productService.sortBySeller((User) session.getAttribute("logged_user")));
-        //System.out.println(abc + "filterlist");
-        return "MyProduct";
+        try {
+            logger.info("show seller product");
+            HttpSession session = request.getSession();
+            List<Product> abc = productService.sortBySeller((User) session.getAttribute("logged_user"));
+            model.addAttribute("filterproduct", productService.sortBySeller((User) session.getAttribute("logged_user")));
+            //System.out.println(abc + "filterlist");
+            return "MyProduct";
+        }catch (Exception e){
+            return "product_all";
+        }
     }
 
     @GetMapping("/delete_product{id}")
     public String DeleteProduct(@PathVariable("id") int id,Model model){
-
+        logger.info("Delete product");
         try{
             List<Cart> allProduct = cartRepository.findAll();
             Product product = productService.getProduct(id);
@@ -188,6 +198,7 @@ public class ProductController {
     public String DeleteImage(@PathVariable("id") int id,Model model,HttpServletRequest request){
         Product product = productService.getProduct(id);
         model.addAttribute("imageproduct",product);
+        logger.info("Delete image");
 
 //        String a = " ";
 //        List<String> blanklist = new ArrayList<>();
@@ -230,6 +241,7 @@ public class ProductController {
     @GetMapping("/Update_product{id}")
     public String getUpdateProduct(@PathVariable("id") int id,Model model){
         model.addAttribute("p",productService.getProduct(id));
+        logger.info("update product");
         return "Update_product";
     }
     @PostMapping("/Update_product")
@@ -258,14 +270,19 @@ public class ProductController {
     @GetMapping("/{productId}")
     public String getProductById(@PathVariable("productId") int productId,Model model,HttpServletRequest request) {
 
-        model.addAttribute("product",productService.getProduct(productId));
-        model.addAttribute("cart",new Cart());
-        Product p = productService.getProduct(productId);
-        User seller = p.getSeller();
-        model.addAttribute("seller",seller);
-        HttpSession session = request.getSession();
-        model.addAttribute("current_user",session.getAttribute("logged_user"));
-        return "product";
+        try {
+            statsDClient.incrementCounter("enpoint.book.http.get");
+            model.addAttribute("product", productService.getProduct(productId));
+            model.addAttribute("cart", new Cart());
+            Product p = productService.getProduct(productId);
+            User seller = p.getSeller();
+            model.addAttribute("seller", seller);
+            HttpSession session = request.getSession();
+            model.addAttribute("current_user", session.getAttribute("logged_user"));
+            return "product";
+        }catch (Exception e){
+            return "product_all";
+        }
     }
 
 
@@ -298,21 +315,25 @@ public class ProductController {
     @PostMapping("/update_image")
     public String Update_img(Model model,HttpServletRequest request,
                              @RequestParam("image") MultipartFile[] image)throws IOException{
-
-        int id = Integer.parseInt(request.getParameter("id"));
-        Product product = productService.getProduct(id);
-       // List<MultipartFile> file1 = Arrays.asList(image);
-        List<String> urllist = product.getImages();
-        for(MultipartFile file : image){
-            String url =  client.uploadFile(file);
-            urllist.add(url);
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            logger.info("update image");
+            Product product = productService.getProduct(id);
+            // List<MultipartFile> file1 = Arrays.asList(image);
+            List<String> urllist = product.getImages();
+            for (MultipartFile file : image) {
+                String url = client.uploadFile(file);
+                urllist.add(url);
+            }
+            long start = System.currentTimeMillis();
+            product.setImages(urllist);
+            productService.AddDetail(product);
+            long time = System.currentTimeMillis() - start;
+            statsDClient.recordExecutionTime("update_image", time);
+            return "redirect:/MyProduct";
+        }catch (Exception e){
+            return "redirect:/MyProduct";
         }
-        long start = System.currentTimeMillis();
-        product.setImages(urllist);
-        productService.AddDetail(product);
-        long time = System.currentTimeMillis() - start;
-        statsDClient.recordExecutionTime("update_image",time);
-        return "redirect:/MyProduct";
     }
 
 }
