@@ -107,7 +107,10 @@ public class MainController {
 
         HttpSession session=request.getSession();
         session.setAttribute("email",email);
+        long start = System.currentTimeMillis();
         User u = userservice.AuthenticateUser(email,pass);
+        long time = System.currentTimeMillis() - start;
+        statsDClient.recordExecutionTime("user_login",time);
         if(u != null){
             model.addAttribute("email", u.getEmailid());
             model.addAttribute("user",u);
