@@ -1,0 +1,15 @@
+[Unit]
+Description=Java Application as a Service
+[Service]
+User=ubuntu
+#change this directory into your workspace
+#mkdir workspace 
+WorkingDirectory=/home/ubuntu/
+#path to the executable bash script which executes the jar file
+ExecStart=/bin/bash /home/ubuntu/codedeploy/your-script.sh
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+[Install]
+WantedBy=multi-user.target
