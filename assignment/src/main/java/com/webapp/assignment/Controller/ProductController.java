@@ -62,7 +62,7 @@ public class ProductController {
 
     @PostMapping("/AddProduct")
     public String AddDetail(HttpServletRequest request, @Valid @ModelAttribute(value = "product") Product product, Model model,RedirectAttributes attributes,
-                            @RequestParam("image") MultipartFile[] image) throws IOException {
+                            @RequestParam("image") MultipartFile[] image)  {
 
         HttpSession session = request.getSession();
         logger.info("Inside AddBook");
