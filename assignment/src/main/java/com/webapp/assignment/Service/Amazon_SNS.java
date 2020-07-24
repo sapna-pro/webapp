@@ -47,7 +47,7 @@ public class Amazon_SNS {
                 .withCredentials(awsCredentialsProvider)
                 .withRegion(awsRegion)
                 .build();
-        logger.info("amazonSNS");
+//        logger.info("amazonSNS");
     }
 
     public void doEmail(String email) {
