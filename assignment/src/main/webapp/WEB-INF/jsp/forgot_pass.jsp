@@ -8,16 +8,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jstl/xml" prefix="x" %>
-<%@ page import="javax.servlet.http.HttpServlet" %>
-<%@ page import="java.security.Principal" %>
-<%@ page import="javax.servlet.http.HttpServletRequest" %>
 
-<%@ page import="org.springframework.beans.factory.annotation.Autowired" %>
-<%@ page import="com.webapp.assignment.Entity.User" %>
-<%@ page import="com.webapp.assignment.Service.Userservice" %>
-<%@ page import="com.webapp.assignment.Repository.UserRepository" %>
-<%@ page import="org.springframework.web.servlet.ModelAndView" %>
-<%@ page import="java.io.IOException" %>
 
 <head>
     <title>Assignment</title>
@@ -98,27 +89,21 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
 <body>
 
-<form action="login" style="border:1px solid #ccc" method="post" >
+<form action="forgot_pass" style="border:1px solid #ccc" method="post" >
     <div class="container">
-        <h1 align="center">Login</h1>
-        <span>${abc}</span>
-        <hr>
+
 
         <label><b>Email</b></label>
         <input type="text" placeholder="Enter Email" name="email" required>
 
-        <label><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" required>
-
         <div class="clearfix">
-            <button type="submit" class="signupbtn" name="action" value="login">Login</button>
+            <button type="submit" class="signupbtn" name="action" value="send">send</button>
 
         </div>
+
     </div>
 </form>
 
-<form action="forgot" method="post">
-    <button type="submit" class="btn btn-default" name="action">Forgot Password</button>
-</form>
+
 </body>
 </html>
