@@ -1,11 +1,14 @@
 package com.webapp.assignment.Controller;
 
 
+
+import com.google.gson.Gson;
 import com.timgroup.statsd.StatsDClient;
 import com.webapp.assignment.Entity.Product;
 import com.webapp.assignment.Entity.User;
 import com.webapp.assignment.Repository.UserRepository;
 import com.webapp.assignment.Service.AmazonClient;
+import com.webapp.assignment.Service.Amazon_SNS;
 import com.webapp.assignment.Service.Userservice;
 
 import org.slf4j.Logger;
@@ -43,6 +46,9 @@ public class MainController {
     private static final String email_PATTERN = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
 
     private Logger logger = LoggerFactory.getLogger(MainController.class);
+
+    @Autowired
+    public Amazon_SNS amazon_sns;
 
     @Autowired
     private StatsDClient statsDClient;
@@ -362,4 +368,20 @@ public class MainController {
 
         return modelAndView;
     }
+
+    @PostMapping(value = "/forgot")
+    public String Forgot(){
+        return "forgot_pass";
+    }
+
+    @PostMapping(value = "/forgot_pass")
+    public String Forgot_password(HttpServletRequest request){
+
+        String email = request.getParameter("email");
+        amazon_sns.doEmail(new Gson().toJson(email));
+//        this.snsUtil.publishSNSMessage(new Gson().toJson(samsungPhone));
+        return "login";
+    }
+
+
 }
