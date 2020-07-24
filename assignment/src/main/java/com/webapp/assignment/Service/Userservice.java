@@ -60,5 +60,11 @@ public class Userservice{
         return user;
     }
 
+    public boolean user_exist(String email){
+        if(userExist(email))
+            return true;
+        return false;
+    }
+
 
 }
