@@ -6,10 +6,14 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sns.model.PublishResult;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class Amazon_SNS {
@@ -45,6 +49,11 @@ public class Amazon_SNS {
     public void doEmail(String email) {
 
 //        System.out.println("in sns+++++++++++++++++++++++++++++++++++++");
+        UUID uuid = UUID.randomUUID();
+//        Map<String, String> map = new HashMap<>();
+//        map.put("email",email);
+//        map.put("uuid", String.valueOf(uuid));
+//        JSONObject jo = new JSONObject(map);
         PublishResult result = this.amazonSNS.publish(this.snsTopicARN, email);
     }
 }

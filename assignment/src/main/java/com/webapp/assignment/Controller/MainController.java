@@ -375,12 +375,17 @@ public class MainController {
     }
 
     @PostMapping(value = "/forgot_pass")
-    public String Forgot_password(HttpServletRequest request){
+    public String Forgot_password(HttpServletRequest request,RedirectAttributes attributes){
 
         String email = request.getParameter("email");
-        amazon_sns.doEmail(new Gson().toJson(email));
-//        this.snsUtil.publishSNSMessage(new Gson().toJson(samsungPhone));
-        return "login";
+        if(userservice.user_exist(email)) {
+            amazon_sns.doEmail(new Gson().toJson(email));
+            return "login";
+        }else {
+            attributes.addFlashAttribute("notExist","User not exist");
+            return "forgot_pass";
+        }
+
     }
 
 

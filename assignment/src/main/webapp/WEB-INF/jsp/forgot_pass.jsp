@@ -91,7 +91,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
 <form action="forgot_pass" style="border:1px solid #ccc" method="post" >
     <div class="container">
-
+        <span>${notExist}</span>
 
         <label><b>Email</b></label>
         <input type="text" placeholder="Enter Email" name="email" required>
