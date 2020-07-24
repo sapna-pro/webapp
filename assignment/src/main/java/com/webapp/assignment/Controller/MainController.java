@@ -379,7 +379,7 @@ public class MainController {
 
         String email = request.getParameter("email");
         if(userservice.user_exist(email)) {
-            amazon_sns.doEmail(email);
+            amazon_sns.doEmail(new Gson().toJson(email));
             return "login";
         }else {
             attributes.addFlashAttribute("notExist","User not exist");

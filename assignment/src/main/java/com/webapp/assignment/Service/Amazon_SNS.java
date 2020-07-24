@@ -53,15 +53,15 @@ public class Amazon_SNS {
     public void doEmail(String email) {
 
         logger.info("insidedoEmail");
-        UUID uuid = UUID.randomUUID();
-        Map<String, String> map = new HashMap<>();
-        map.put("email",email);
-        JSONObject jo = new JSONObject(map);
-        logger.info("json String created");
+//        UUID uuid = UUID.randomUUID();
+//        Map<String, String> map = new HashMap<>();
+//        map.put("email",email);
+//        JSONObject jo = new JSONObject(map);
+//        logger.info("json String created");
 
 
 
-        PublishRequest publishRequest = new PublishRequest(snsTopicARN,String.valueOf(jo));
+        PublishRequest publishRequest = new PublishRequest(snsTopicARN,email);
         logger.info("publishrequest");
         PublishResult publishResult = this.amazonSNS.publish(publishRequest);
         //PublishResult result = this.amazonSNS.publish(this.snsTopicARN, email);
