@@ -5,6 +5,7 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
+import com.amazonaws.services.sns.model.MessageAttributeValue;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
 import net.minidev.json.JSONObject;
@@ -59,9 +60,14 @@ public class Amazon_SNS {
 //        JSONObject jo = new JSONObject(map);
 //        logger.info("json String created");
 
+        String msg = "hello";
+        Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
+        final MessageAttributeValue messageAttributeValue = new MessageAttributeValue()
+                .withDataType("String")
+                .withStringValue(email);
+        messageAttributes.put("email", messageAttributeValue);
 
-
-        PublishRequest publishRequest = new PublishRequest(snsTopicARN,email);
+        PublishRequest publishRequest = new PublishRequest(snsTopicARN,msg).withMessageAttributes(messageAttributes);
         logger.info("publishrequest");
         PublishResult publishResult = this.amazonSNS.publish(publishRequest);
         //PublishResult result = this.amazonSNS.publish(this.snsTopicARN, email);
