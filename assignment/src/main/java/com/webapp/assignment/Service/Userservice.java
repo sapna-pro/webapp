@@ -48,16 +48,36 @@ public class Userservice{
 
         User user = userRepository.findByEmailid(emailid);
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        User logged_user=null;
 
-        if(user == null){
-            user = null;
-            return user;
-        }else{
+        if(userExist(emailid)){
+            System.out.println("user found");
+
             if(encoder.matches(pass, user.getPassword())){
-                return user;
+                logged_user = user;
+                System.out.println("user returen");
+                return logged_user;
             }
+
+        }else{
+            logged_user = null;
+            System.out.println("null user returen");
+            return logged_user;
         }
-        return user;
+        System.out.println("returen statement excecute");
+        return logged_user;
+//        User user = userRepository.findByEmailid(emailid);
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//
+//        if(user == null){
+//            user = null;
+//            return user;
+//        }else{
+//            if(encoder.matches(pass, user.getPassword())){
+//                return user;
+//            }
+//        }
+//        return user;
     }
 
     public boolean user_exist(String email){
