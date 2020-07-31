@@ -60,7 +60,11 @@ public class CartController {
             model.addAttribute("cart", cartService.getAllProductFromCart());
             List<Cart> totalproduct = cartService.getAllProductFromCart();
             cart.setProduct(productService.getProduct(productId));
-//            cart.setQuantity(1);
+            Product p = productService.getProduct(productId);
+            int qun = p.getQuantity()-1;
+            p.setQuantity(qun);
+            productService.AddDetail(p);
+            cart.setQuantity(1);
             cart.setCartUser((User) session.getAttribute("logged_user"));
             long start = System.currentTimeMillis();
             cartService.AddToCart(cart);
@@ -95,11 +99,8 @@ public class CartController {
 //                break;
 //            }
             if(cart.getQuantity()>quantity){
-                System.out.println("in second if");
                 int xyz = cart.getQuantity()-quantity;
-                System.out.println("in second xyz"+xyz);
                 int product_quantity = p.getQuantity()+xyz;
-                System.out.println("in second product quantity"+product_quantity);
                 cart.setQuantity(quantity);
                 cartService.AddToCart(cart);
                 p.setQuantity(product_quantity);
@@ -109,17 +110,12 @@ public class CartController {
             else {
 
                 if(quantity>p.getQuantity()){
-                System.out.println("in first if");
+                    model.addAttribute("quantity","quantity more than product quantity");
                 break;
             }else {
 
-
-                    System.out.println("in else");
-
                     int xyz = quantity - cart.getQuantity();
-                    System.out.println("in else xyz" + xyz);
                     int abc = p.getQuantity() - xyz;
-                    System.out.println("in else abc" + abc);
                     cart.setQuantity(quantity);
                     p.setQuantity(abc);
                     productService.AddDetail(p);
@@ -129,7 +125,7 @@ public class CartController {
                 }
             }
         }
-        attributes.addFlashAttribute("quantity","quantity more than product quantity");
+
         model.addAttribute("cart", carts);
         return "cart";
     }
