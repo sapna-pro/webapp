@@ -62,6 +62,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
             <th>Title</th>
             <th>Price</th>
             <th>Quantity</th>
+            <th></th>
             <th>Sub Total</th>
         </tr>
         </thead>
@@ -74,7 +75,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                     onclick="return confirm('Are you sure?')">Remove</a></td>
             <td>${cart.getProduct().getTitle()}</td>
             <td>${cart.getProduct().getPrice()}</td>
-            <td>${cart.getQuantity()}</td>
+            <form method="post" action="cart_qun" >
+                <td><input type="text" name="quantity" value=${cart.quantity}><span>${quantity}</span></td>
+                <td><button type="submit">ADD</button></td>
             <c:set var="xyz" value="${cart.getQuantity() * request.getParameter(quantity)}"></c:set>
             <td>${cart.getProduct().getPrice() * cart.getQuantity()}</td>
             <c:set var="total"
@@ -86,6 +89,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
             <td colspan="6" align="right">Sum</td>
             <td>${total }</td>
+        </form>
         </tr>
     </table>
     </div>
