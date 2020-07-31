@@ -2,6 +2,7 @@ package com.webapp.assignment.Controller;
 
 import com.timgroup.statsd.StatsDClient;
 import com.webapp.assignment.Entity.Cart;
+import com.webapp.assignment.Entity.Product;
 import com.webapp.assignment.Entity.User;
 import com.webapp.assignment.Repository.CartRepository;
 import com.webapp.assignment.Service.CartService;
@@ -14,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -57,7 +60,7 @@ public class CartController {
             model.addAttribute("cart", cartService.getAllProductFromCart());
             List<Cart> totalproduct = cartService.getAllProductFromCart();
             cart.setProduct(productService.getProduct(productId));
-            cart.setQuantity(1);
+//            cart.setQuantity(1);
             cart.setCartUser((User) session.getAttribute("logged_user"));
             long start = System.currentTimeMillis();
             cartService.AddToCart(cart);
@@ -76,4 +79,59 @@ public class CartController {
             return "product";
         }
     }
+
+    @RequestMapping(value = "cart_qun" ,method = RequestMethod.POST)
+    public String cart_quantity(HttpServletRequest request, Model model, RedirectAttributes attributes){
+
+        HttpSession session = request.getSession();
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        Product p = null;
+
+        List<Cart> carts = cartService.findUserCart((User) session.getAttribute("logged_user"));
+        for(Cart cart : carts){
+            p = cart.getProduct();
+//            if(quantity>p.getQuantity()){
+//                System.out.println("in first if");
+//                break;
+//            }
+            if(cart.getQuantity()>quantity){
+                System.out.println("in second if");
+                int xyz = cart.getQuantity()-quantity;
+                System.out.println("in second xyz"+xyz);
+                int product_quantity = p.getQuantity()+xyz;
+                System.out.println("in second product quantity"+product_quantity);
+                cart.setQuantity(quantity);
+                cartService.AddToCart(cart);
+                p.setQuantity(product_quantity);
+                productService.AddDetail(p);
+            }
+
+            else {
+
+                if(quantity>p.getQuantity()){
+                System.out.println("in first if");
+                break;
+            }else {
+
+
+                    System.out.println("in else");
+
+                    int xyz = quantity - cart.getQuantity();
+                    System.out.println("in else xyz" + xyz);
+                    int abc = p.getQuantity() - xyz;
+                    System.out.println("in else abc" + abc);
+                    cart.setQuantity(quantity);
+                    p.setQuantity(abc);
+                    productService.AddDetail(p);
+                    System.out.println(p.getQuantity() + "product quantityyyyyyyyyy");
+                    System.out.println(cart.getQuantity() + "quantityyyyyyyyyy");
+                    cartService.AddToCart(cart);
+                }
+            }
+        }
+        attributes.addFlashAttribute("quantity","quantity more than product quantity");
+        model.addAttribute("cart", carts);
+        return "cart";
+    }
+
 }

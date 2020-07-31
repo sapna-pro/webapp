@@ -61,6 +61,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 <div class="container">
     <div class="row">
         <c:forEach items="${products}" var="products">
+            <c:if test = "${products.quantity>=1}">
             <div class="col-sm-4">
                 <div class="panel panel-primary">
                     <div class="panel-heading"> ${products.getTitle()} </div>
@@ -85,6 +86,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 
                 </div>
             </div>
+            </c:if>
         </c:forEach>
     </div>
 </div><br>

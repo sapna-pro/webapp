@@ -61,6 +61,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                     <div class="panel-body">
                         <p>Price : ${filterproduct.getPrice()}  </p>
                         <p>Author :  ${filterproduct.getAuthore()} </p>
+                        <p>Quantity :  ${filterproduct.quantity} </p>
                         <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
