@@ -70,13 +70,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         <c:forEach items="${cart}" var="cart">
 
         <tr>
-            <td align="center"><a
-                    href="${pageContext.request.contextPath }/cart/remove/${cart.getProduct().getId()}"
-                    onclick="return confirm('Are you sure?')">Remove</a></td>
+            <td align="center"></td>
             <td>${cart.getProduct().getTitle()}</td>
-            <td>${cart.getProduct().getPrice()}</td>
+            <td>${cart.getProduct().getPrice()}</td><span>${quantity}</span>
             <form method="post" action="cart_qun" >
-                <td><input type="text" name="quantity" value=${cart.quantity}><span>${quantity}</span></td>
+                <td><input type="text" name="quantity" value=${cart.quantity}></td>
                 <td><button type="submit">ADD</button></td>
             <c:set var="xyz" value="${cart.getQuantity() * request.getParameter(quantity)}"></c:set>
             <td>${cart.getProduct().getPrice() * cart.getQuantity()}</td>
@@ -88,7 +86,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         <tr>
 
             <td colspan="6" align="right">Sum</td>
-            <td>${total }</td>
+            <td>${total}</td>
         </form>
         </tr>
     </table>
